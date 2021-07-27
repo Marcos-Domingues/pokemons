@@ -25,7 +25,7 @@ export default {
   },
   created() {
     if (this.$store.getters.game?.name) {
-      api.fetchGame(this.$store.getters.game.name, true).then((item) => {
+      api.fetchGame(this.$store.getters.game.name).then((item) => {
         this.pokemons = item.data.pokemon_species;
         this.pokeNumber = item.data.pokemon_species.length;
       });

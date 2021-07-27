@@ -2,10 +2,10 @@
   <section>
     <div class="container mt-5">
       <div class="d-flex justify-content-evenly mb-4">
-      <button @click="changePage(false)" class="btn btn-danger">
+      <button @click="changePage(false)" :class="{ disabled : !previousPage}" class="btn btn-danger">
         Previous
       </button>
-      <button @click="changePage(true)" class="btn btn-danger">Next</button>
+      <button @click="changePage(true)" :class="{ disabled : !nextPage}" class="btn btn-danger">Next</button>
       </div>
       <Card :list="pokemons"></Card>
     </div>
@@ -23,25 +23,31 @@ export default {
     return {
       pokemons: [],
       previousPage: "",
+      nextPage: "",
     };
   },
   created() {
     api.listPokemons(false).then((item) => {
       this.pokemons = item.data.results;
       this.previousPage = item.data.previous;
+      this.nextPage = item.data.next
     });
   },
   methods: {
     changePage(i) {
       if (i) {
-        api.listPokemons(i).then((item) => {
+        api.next(this.nextPage).then((item) => {
           this.pokemons = item.data.results;
+          this.nextPage = item.data.next
           this.previousPage = item.data.previous;
-        });
+        }).catch((err) => {
+          console.log(err);
+        })
       }else{
         api.previous(this.previousPage)
         .then((item) => {
           this.pokemons = item.data.results;
+          this.nextPage = item.data.next
           this.previousPage = item.data.previous;
         })
       }
@@ -49,3 +55,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.disabled{
+  cursor:not-allowed;
+}
+</style>
