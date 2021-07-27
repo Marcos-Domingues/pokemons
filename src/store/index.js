@@ -5,14 +5,14 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    game: {}
+    game: {},
   },
   mutations: {
     SET_GAME(state, status) {
       state.game = status;
-    }
+    },
   },
   getters: {
-    game: state => state.game
+    game: state => state.game,
   }
 });

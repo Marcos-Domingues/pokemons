@@ -25,10 +25,15 @@ export default {
   },
   created() {
     if (this.$store.getters.game?.name) {
+      this.$parent.loading(true)
       api.fetchGame(this.$store.getters.game.name).then((item) => {
         this.pokemons = item.data.pokemon_species;
         this.pokeNumber = item.data.pokemon_species.length;
-      });
+        this.$parent.loading(false)
+      }).catch((err) => {
+        console.log(err);
+        this.$parent.loading(false)
+      })
     }else{
         this.$router.push({path: "/generations"})
     }

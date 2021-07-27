@@ -17,9 +17,14 @@ export default {
     };
   },
   created() {
+    this.$parent.loading(true)
     api.listGames().then((item) => {
       this.generations = item.data.results;
-    });
+      this.$parent.loading(false)
+    }).catch((err) => {
+      this.$parent.loading(false)
+      console.log(err);
+    })
   },
   methods: {
     redirect(data){
