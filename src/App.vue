@@ -1,10 +1,10 @@
 <template>
 <section>
-  <div id="app" :class="{blur : load}">
+  <div id="app" :class="{blur : getLoading}">
     <Header></Header>
     <router-view class="fade-in"></router-view>
   </div>
-    <Spinner v-if="load" :loading="load"></Spinner>
+    <Spinner v-if="getLoading"></Spinner>
 </section>
 </template>
 
@@ -14,15 +14,14 @@ import Spinner from "./components/Spinner.vue"
 export default {
   name: 'App',
   data: () => ({
-    load: false
   }),
   components: {
     Header,
     Spinner
   },
-  methods: {
-    loading(val){
-      this.load = val;
+  computed: {
+    getLoading() {
+      return this.$store.getters.loading
     }
   }
 }

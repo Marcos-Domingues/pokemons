@@ -3,7 +3,9 @@
       <img src="../assets/generations.png" alt="">
     <div class="container center">
       <ul class="list-group">
-          <li v-for="(gen, i) in generations" :key="i" @click="redirect(gen)" class="list-group-item">{{ gen.name }} <img class="pokebola" src="../assets/pokebola.png" alt=""></li>
+          <li v-for="(gen, i) in generations" :key="i" @click="redirect(gen)" class="list-group-item">{{ gen.name }}
+            <img class="pokebola" src="../assets/pokebola.png" alt="">
+          </li>
       </ul>
     </div>
   </section>
@@ -17,14 +19,12 @@ export default {
     };
   },
   created() {
-    this.$parent.loading(true)
+    this.$store.commit("SET_LOADING", true);
     api.listGames().then((item) => {
       this.generations = item.data.results;
-      this.$parent.loading(false)
     }).catch((err) => {
-      this.$parent.loading(false)
       console.log(err);
-    })
+    }).finally(() => this.$store.commit("SET_LOADING", false))
   },
   methods: {
     redirect(data){

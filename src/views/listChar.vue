@@ -27,42 +27,39 @@ export default {
     };
   },
   created() {
-    this.$parent.loading(true)
+    this.$store.commit("SET_LOADING", true)
     api.listPokemons(false).then((item) => {
       this.pokemons = item.data.results;
       this.previousPage = item.data.previous;
       this.nextPage = item.data.next
-      this.$parent.loading(false)
     }).catch((err) => {
-      this.$parent.loading(false)
       console.log(err);
     })
+    .finally(() => this.$store.commit("SET_LOADING", false))
   },
   methods: {
     changePage(i) {
       if (i) {
-        this.$parent.loading(true)
+        this.$store.commit("SET_LOADING", true)
         api.next(this.nextPage).then((item) => {
           this.pokemons = item.data.results;
           this.nextPage = item.data.next
           this.previousPage = item.data.previous;
-          this.$parent.loading(false)
         }).catch((err) => {
-          this.$parent.loading(false)
           console.log(err);
         })
+        .finally(() => this.$store.commit("SET_LOADING", false))
       }else{
-        this.$parent.loading(true)
+        this.$store.commit("SET_LOADING", true)
         api.previous(this.previousPage)
         .then((item) => {
           this.pokemons = item.data.results;
           this.nextPage = item.data.next
           this.previousPage = item.data.previous;
-          this.$parent.loading(false)
         }).catch((err) => {
-          this.$parent.loading(false)
           console.log(err);
         })
+        .finally(() => this.$store.commit("SET_LOADING", false))
       }
     },
   },
